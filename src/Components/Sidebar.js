@@ -4,8 +4,19 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import {sidebarItems} from '../data/SidebarData';
 import AddIcon from '@material-ui/icons/Add';
 import { sidebarChannels } from '../data/SidebarChannel';
+import db from '../firebase';
 
-function Sidebar() {
+function Sidebar(props) {
+
+    const addChannel = () =>{
+        const promptName = prompt("Enter Channel name");
+        if(promptName){
+            db.collection('rooms').add({
+                name: promptName
+            })
+        }
+
+    }
     return (
       <Container>
           <WorkSpaceContainer>
@@ -32,16 +43,29 @@ function Sidebar() {
                   <div>
                       Channels
                   </div>
-                  <AddIcon/>
+                  <AddIcon onClick = {addChannel}/>
               </NewChannelContainer>
               <ChannelList>
-              {
+                  {
+                      props.rooms.map(item => (
+                          <Channel>
+                              #{item.name}
+                          </Channel>
+                      ))
+                  }
+
+
+
+
+
+
+              {/* {
                           sidebarChannels.map(item => (
                             <Channel>
                                 {item.text}
                             </Channel>
                           ))
-                      }
+                      } */}
                   
               </ChannelList>
           </ChannelsContainer>
@@ -53,7 +77,8 @@ function Sidebar() {
 export default Sidebar
 
 const Container = styled.div `
-    background: #1B2631;
+    background: #1B2631
+    ;
 `
 
 const WorkSpaceContainer = styled.div `
@@ -63,7 +88,8 @@ const WorkSpaceContainer = styled.div `
     align-items: center;
     padding-left: 19px;
     justify-content: space-between;
-    border-bottom: 1px solid;
+    
+    box-shadow: 0 1px 0 0 rgb(255 255 255 / 10%);
 `
 
 const Name = styled.div `
@@ -96,7 +122,8 @@ const MainChannelItem = styled.div `
     padding-left: 19px;
     cursor: pointer;
     :hover{
-        background: #350D36
+        background: #2874A6 ;
+        color: white;
     }
 `
 const ChannelsContainer = styled.div `
@@ -122,7 +149,8 @@ const Channel = styled.div `
     padding-left: 19px;
     
     :hover{
-        background: #350D36
+        background: #2874A6 ;
+        color: white;
     }
     `
 
